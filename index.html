@@ -4,20 +4,20 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#f5f6f8" />
-  <meta name="description" content="テンポ・リズムがなぜズレるかを、拍知覚・外部同期・内的テンポ保持・リズム記憶・ズレ補正からチェックするWebアプリ" />
-  <title>リズムずれ原因チェック v003</title>
+  <meta name="description" content="テンポ・リズムがなぜズレるかを、聞く・合わせる・保つ・覚える・戻すの5つに分けてチェックするWebアプリ" />
+  <title>リズムずれ原因チェック v004</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 <main class="app-shell">
   <header class="hero">
-    <div class="eyebrow">RHYTHM & TEMPO CHECK · v003</div>
+    <div class="eyebrow">リズム・テンポチェック · v004</div>
     <h1>リズムずれ原因チェック</h1>
     <p class="lead">「テンポがズレる」を1つの“リズム感”で片づけず、<strong>どこでズレが生まれているか</strong>を分けて見ます。</p>
     <div class="ability-chips">
-      <span>拍を見つける</span><span>拍に合わせる</span><span>内側で保つ</span><span>型を覚える</span><span>ズレを戻す</span>
+      <span>リズムの土台をつかむ</span><span>音に合わせる</span><span>音が消えても保つ</span><span>リズムを覚える</span><span>ズレを戻す</span>
     </div>
-    <p class="note">※ 医療診断・能力証明ではありません。研究知見を参考にした練習方向づけ用の簡易ツールです。</p>
+    <p class="note">※ 医療的な診断ではありません。「どこを練習すると良さそうか」を見つけるための簡易チェックです。</p>
   </header>
 
   <section class="stepper" aria-label="進行状況">
@@ -27,16 +27,16 @@
 
   <section id="screenIntro" class="screen active">
     <div class="card intro-card">
-      <span class="section-kicker">START</span>
+      <span class="section-kicker">はじめに</span>
       <h2>約8〜12分</h2>
       <p class="subtle">質問だけで決めず、実際に「聞く・叩く・無音でも続ける」を組み合わせます。</p>
       <div class="flow-grid">
-        <div><b>1</b><span>質問18問</span><small>普段のズレ方・脳内再生</small></div>
-        <div><b>2</b><span>拍知覚</span><small>拍とクリックの一致判断</small></div>
-        <div><b>3</b><span>外部同期</span><small>メトロノームに合わせる</small></div>
-        <div><b>4</b><span>内的保持</span><small>音が消えても続ける</small></div>
-        <div><b>5</b><span>テンポ追従</span><small>速さの変化についていく</small></div>
-        <div><b>6</b><span>リズム記憶</span><small>短い型を再現する</small></div>
+        <div><b>1</b><span>質問18問</span><small>普段のズレ方・頭の中のリズム</small></div>
+        <div><b>2</b><span>土台をつかむ</span><small>「1・2・3・4」の位置を感じる</small></div>
+        <div><b>3</b><span>音に合わせる</span><small>クリックと同じ速さで叩く</small></div>
+        <div><b>4</b><span>音なしで保つ</span><small>音が消えても同じ速さを続ける</small></div>
+        <div><b>5</b><span>速さの変化に合わせる</span><small>途中で速く・遅くなっても合わせ直す</small></div>
+        <div><b>6</b><span>リズムを覚える</span><small>聞いたリズムをそのまま叩く</small></div>
       </div>
 
       <div class="sound-check-panel">
@@ -62,7 +62,7 @@
   <section id="screenQuestions" class="screen">
     <div class="card">
       <div class="section-head">
-        <div><span class="section-kicker">QUESTION</span><h2>普段の感覚</h2><p class="subtle compact">“上手いと思うか”ではなく、実際に起こることを基準に答えてください。</p></div>
+        <div><span class="section-kicker">質問</span><h2>普段の感覚</h2><p class="subtle compact">「できそう」ではなく、普段実際にどうなるかを基準に答えてください。</p></div>
         <span id="questionCount" class="counter">0 / 18</span>
       </div>
       <div id="questionList" class="question-list"></div>
@@ -72,10 +72,10 @@
 
   <section id="screenPerception" class="screen">
     <div class="card test-card">
-      <span class="section-kicker">TEST 1 · BEAT PERCEPTION</span>
-      <h2>拍を見つける</h2>
-      <p>短いリズムに重なる高いクリックが、<strong>拍に合っているか／少しズレているか</strong>を判断します。全6問です。</p>
-      <div class="test-tip">「クリックが気持ちよく重なるか」で答えてください。同じ問題は1回だけ聞き直せます。</div>
+      <span class="section-kicker">テスト 1</span>
+      <h2>リズムの土台をつかむ</h2>
+      <p>短いリズムに重なる高い音が、<strong>「1・2・3・4」のタイミングに合っているか／少しズレているか</strong>を判断します。全6問です。</p>
+      <div class="test-tip">「自然に重なって聞こえるか」で答えてください。同じ問題は1回だけ聞き直せます。</div>
       <div class="test-stage">
         <div id="perceptionStatus" class="test-status">準備OK</div>
         <button id="playPerceptionBtn" class="play-btn">▶ リズムを再生</button>
@@ -88,13 +88,13 @@
 
   <section id="screenSync" class="screen">
     <div class="card test-card">
-      <span class="section-kicker">TEST 2 · SYNCHRONIZATION</span>
-      <h2>外の拍に合わせる</h2>
-      <p>90 BPMのクリックに合わせてTAPします。最初の数拍で拍をつかみ、そのまま<strong>できるだけ一定に</strong>叩いてください。</p>
-      <div class="test-tip">PCはスペースキーでもOK。端末差を減らすため、クリックとの絶対的な早い/遅いより「ばらつき」と「テンポ一致」を重視します。</div>
+      <span class="section-kicker">テスト 2</span>
+      <h2>聞こえる音に合わせる</h2>
+      <p>一定の速さで鳴るクリックに合わせてTAPします。最初に速さをつかみ、そのまま<strong>同じ間隔で</strong>叩いてください。</p>
+      <div class="test-tip">PCはスペースキーでもOKです。「ピッタリ何秒で押せたか」より、同じ速さで安定して叩けているかを見ます。</div>
       <div class="test-stage">
         <div id="syncStatus" class="test-status">開始ボタンを押してください</div>
-        <button id="startSyncBtn" class="play-btn">▶ 90 BPMで開始</button>
+        <button id="startSyncBtn" class="play-btn">▶ 一定の速さで開始</button>
         <button id="syncTapPad" class="tap-pad" disabled><span>TAP</span><small>クリックに合わせる</small></button>
         <div id="syncCounter" class="tap-counter">TAP 0</div>
         <div id="syncFeedback" class="feedback"></div>
@@ -105,15 +105,15 @@
 
   <section id="screenContinuation" class="screen">
     <div class="card test-card">
-      <span class="section-kicker">TEST 3 · INTERNAL PULSE</span>
-      <h2>音が消えてもテンポを保つ</h2>
-      <p>最初の8拍はクリックが鳴ります。その後8拍は<strong>無音になりますが、同じテンポのままTAPを続けてください。</strong></p>
-      <div class="test-tip">ここが今回の中心テストです。外部刺激が消えたあとに、内側でテンポをどれくらい維持できるかを見ます。</div>
-      <div class="phase-indicator"><span id="phaseExternal" class="active">クリックあり</span><span id="phaseInternal">無音</span></div>
+      <span class="section-kicker">テスト 3</span>
+      <h2>音が消えても同じ速さを保つ</h2>
+      <p>最初の8回はクリックが鳴ります。その後は音が消えますが、<strong>最初と同じ速さのままTAPを続けてください。</strong></p>
+      <div class="test-tip">ここが今回の中心テストです。音に頼らなくても、自分の中で同じ速さを保てるかを見ます。</div>
+      <div class="phase-indicator"><span id="phaseExternal" class="active">音あり</span><span id="phaseInternal">音なし</span></div>
       <div class="test-stage">
         <div id="contStatus" class="test-status">開始ボタンを押してください</div>
-        <button id="startContBtn" class="play-btn">▶ 8拍＋無音8拍を開始</button>
-        <button id="contTapPad" class="tap-pad" disabled><span>TAP</span><small>無音になっても続ける</small></button>
+        <button id="startContBtn" class="play-btn">▶ 音あり8回＋音なし8回を開始</button>
+        <button id="contTapPad" class="tap-pad" disabled><span>TAP</span><small>音が消えても続ける</small></button>
         <div id="contCounter" class="tap-counter">TAP 0</div>
         <div id="contFeedback" class="feedback"></div>
       </div>
@@ -123,13 +123,13 @@
 
   <section id="screenAdapt" class="screen">
     <div class="card test-card">
-      <span class="section-kicker">TEST 4 · TEMPO ADAPTATION</span>
-      <h2>テンポ変化に追従する</h2>
-      <p>途中でテンポが変わります。止まらずにTAPを続け、<strong>新しい速さへ追従</strong>してください。</p>
-      <div class="test-tip">ズレを感じたあと、どれくらい素早く新しい周期へ修正できるかを見ます。</div>
+      <span class="section-kicker">テスト 4</span>
+      <h2>速さが変わっても合わせ直す</h2>
+      <p>途中でクリックの速さが変わります。止まらずにTAPを続け、<strong>新しい速さに合わせ直してください。</strong></p>
+      <div class="test-tip">速さが変わったあと、何回くらいで新しい速さに合わせ直せるかを見ます。</div>
       <div class="test-stage">
         <div id="adaptStatus" class="test-status">開始ボタンを押してください</div>
-        <button id="startAdaptBtn" class="play-btn">▶ テンポ変化テスト開始</button>
+        <button id="startAdaptBtn" class="play-btn">▶ 速さが変わるテストを開始</button>
         <button id="adaptTapPad" class="tap-pad" disabled><span>TAP</span><small>変化しても止めない</small></button>
         <div id="adaptCounter" class="tap-counter">TAP 0</div>
         <div id="adaptFeedback" class="feedback"></div>
@@ -140,10 +140,10 @@
 
   <section id="screenMemory" class="screen">
     <div class="card test-card">
-      <span class="section-kicker">TEST 5 · RHYTHM MEMORY</span>
-      <h2>短いリズムの型を覚える</h2>
-      <p>短いリズムを2回聞き、その後<strong>5回TAPして同じリズムを再現</strong>します。全3問です。</p>
-      <div class="test-tip">速さを完全に同じにする必要はありません。「短い・長い」の並び方を再現してください。</div>
+      <span class="section-kicker">テスト 5</span>
+      <h2>聞いたリズムを覚えて真似する</h2>
+      <p>短いリズムを2回聞き、その後<strong>5回TAPして同じリズムを真似</strong>します。全3問です。</p>
+      <div class="test-tip">全体の速さが少し違っても大丈夫です。音と音の間が「短い・長い」のどちらだったかを意識してください。</div>
       <div class="test-stage">
         <div id="memoryStatus" class="test-status">第1問 / 3</div>
         <button id="playPatternBtn" class="play-btn">▶ リズムを2回聞く</button>
@@ -157,25 +157,25 @@
 
   <section id="screenResult" class="screen">
     <div class="result-hero card">
-      <span class="section-kicker">YOUR RHYTHM PROFILE</span>
-      <p class="result-label">今回もっとも確認したいポイント</p>
+      <span class="section-kicker">診断結果</span>
+      <p class="result-label">今回いちばん見直したいポイント</p>
       <h2 id="mainCause">—</h2>
       <p id="causeDescription" class="result-description"></p>
     </div>
 
     <div class="card radar-card">
-      <div class="section-head"><div><h3>5つのタイミング能力</h3><p class="subtle compact">実技を受けた項目は「実技70%＋自己評価30%」の暫定スコアです。</p></div></div>
+      <div class="section-head"><div><h3>リズムがズレる原因を5つに分けてチェック</h3><p class="subtle compact">実際のテスト結果を中心に、普段の自己評価も少し加えた参考スコアです。</p></div></div>
       <canvas id="radarCanvas" width="700" height="560" aria-label="タイミング能力レーダーチャート"></canvas>
       <div id="scoreGrid" class="score-grid"></div>
     </div>
 
     <div class="card">
-      <h3>脳内再生との関係</h3>
+      <h3>「頭の中でリズムを鳴らす力」との関係</h3>
       <div id="imageryBox" class="insight-box"></div>
     </div>
 
     <div class="card">
-      <h3>ズレの原因候補</h3>
+      <h3>ズレやすさにつながっていそうなポイント</h3>
       <div id="causeList" class="cause-list"></div>
     </div>
 
@@ -185,19 +185,19 @@
     </div>
 
     <div class="card">
-      <h3>実測メモ</h3>
+      <h3>テスト結果の詳しい数字</h3>
       <div id="metricsBox" class="metrics-grid"></div>
-      <p class="subtle">ブラウザ・スマホの入出力遅延があるため、絶対的な「何ms早い/遅い」の診断はしていません。繰り返し同じ端末で比較すると変化を追いやすくなります。</p>
+      <p class="subtle">スマホやPCによってボタンを押した時のわずかな遅れが違うため、「何秒早い・遅い」よりも、安定して同じ速さで叩けたかを重視しています。同じ端末で繰り返すと上達を比較しやすくなります。</p>
     </div>
 
     <details class="card research-card">
-      <summary>このチェックに取り入れた研究知見</summary>
+      <summary>このチェックの考え方のもとになった研究</summary>
       <div class="research-list">
-        <p><b>知覚と産出を分ける：</b> BAASTA / H-BATなどでは、拍の知覚・同期・継続・テンポ変化への適応などを別課題として扱います。</p>
-        <p><b>聞こえていても合わせられない場合がある：</b> リズム知覚が保たれていても同期が苦手な例があり、聴覚→運動マッピングの違いが示唆されています。</p>
-        <p><b>外音が消えた後を測る：</b> synchronization–continuation課題は、外部の拍から内的タイミングへ切り替わった後のテンポ保持を調べる代表的手法です。</p>
-        <p><b>脳内再生は“支援要因”：</b> 2024年の研究では、聴覚イメージを操作する自己評価が高いほど、ガイドが消えた継続フェーズの同期が安定する関係が報告されています。</p>
-        <p><b>リズム能力は多次元：</b> 1つの「リズム感」ではなく、知覚・運動・記憶・予測など複数要素として捉える研究が増えています。</p>
+        <p><b>「聞き取れる」と「合わせられる」は別：</b> 研究用のリズムテストでも、リズムを感じ取る力、音に合わせて動く力、音がなくても速さを保つ力などを別々に調べます。</p>
+        <p><b>リズムが分かっていても身体が合わないことがある：</b> 音のタイミングは分かっていても、手や声をそのタイミングに合わせる部分が苦手な人がいることが報告されています。</p>
+        <p><b>音が消えた後を見る：</b> 最初はクリックに合わせ、その後クリックを消して同じ速さを続ける方法は、「自分の中で速さを保てるか」を調べる研究でも使われています。</p>
+        <p><b>頭の中で音を鳴らす力も関係する可能性：</b> 2024年の研究では、頭の中の音を動かしたり保ったりしやすい人ほど、実際の音が消れた後もリズムを保ちやすい傾向が報告されています。</p>
+        <p><b>「リズム感」は1つの能力ではない：</b> リズムを見つける、合わせる、覚える、速さを保つ、ズレたら戻す、という複数の力に分けて考える研究が増えています。</p>
       </div>
       <div class="reference-links">
         <a href="https://doi.org/10.3758/s13423-012-0371-2" target="_blank" rel="noreferrer">Repp & Su, 2013</a>

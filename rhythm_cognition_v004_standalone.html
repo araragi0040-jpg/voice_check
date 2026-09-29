@@ -1,3 +1,230 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#f5f6f8" />
+  <meta name="description" content="テンポ・リズムがなぜズレるかを、聞く・合わせる・保つ・覚える・戻すの5つに分けてチェックするWebアプリ" />
+  <title>リズムずれ原因チェック v004</title>
+  <style>
+:root{--bg:#f5f6f8;--card:#fff;--text:#171a1e;--muted:#69717b;--line:#e3e7eb;--accent:#20262d;--soft:#f2f4f6;--ok:#eaf7ef;--okT:#28613d;--warn:#fff4df;--warnT:#805b10;--radius:22px;--shadow:0 12px 34px rgba(18,24,31,.065)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif;line-height:1.65}button,input{font:inherit}.app-shell{width:min(800px,100%);margin:auto;padding:22px 16px 58px}.hero{text-align:center;padding:18px 5px 12px}.eyebrow,.section-kicker{font-size:11px;letter-spacing:.14em;font-weight:850;color:#858d97}.hero h1{font-size:clamp(30px,8vw,46px);line-height:1.12;margin:8px 0 11px;letter-spacing:-.045em}.lead{max-width:650px;margin:0 auto 14px;color:#4d5560}.ability-chips{display:flex;flex-wrap:wrap;gap:7px;justify-content:center}.ability-chips span{background:#fff;border:1px solid var(--line);padding:6px 10px;border-radius:999px;font-size:12px}.note,.subtle{font-size:12px;color:#858c95}.compact{margin:4px 0}.stepper{position:sticky;top:0;z-index:20;padding:11px 0 14px;background:linear-gradient(var(--bg) 74%,transparent)}.progress-track{height:5px;background:#e2e5e8;border-radius:999px;overflow:hidden}.progress-bar{height:100%;width:0;background:#242a31;transition:.3s}.progress-text{text-align:right;font-size:11px;color:#7e858e;margin-top:4px}.screen{display:none}.screen.active{display:block;animation:fade .2s ease}@keyframes fade{from{opacity:.35;transform:translateY(5px)}to{opacity:1;transform:none}}
+.card{background:var(--card);border:1px solid #eaedf0;border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);margin-bottom:16px}.card h2,.card h3{margin-top:0;letter-spacing:-.025em}.intro-card{text-align:center;padding:28px 22px}.flow-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin:20px 0}.flow-grid div{border:1px solid var(--line);border-radius:16px;padding:13px 9px;display:grid;gap:1px}.flow-grid b{margin:auto;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:#20242a;color:#fff;font-size:12px}.flow-grid span{font-weight:800}.flow-grid small{font-size:10px;color:var(--muted)}
+button{border:0;border-radius:13px;padding:13px 16px;font-weight:800;cursor:pointer;transition:.14s;touch-action:manipulation;-webkit-tap-highlight-color:transparent}button:active{transform:scale(.985)}button:disabled{opacity:.38;cursor:not-allowed}.primary{background:#20242a;color:#fff}.secondary{background:#f0f2f4;color:#30363d}.ghost{background:#fff;color:#737b84;border:1px solid var(--line)}.wide{width:100%}.actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:18px}.actions.two{grid-template-columns:1fr 1.5fr}.sticky-actions{position:sticky;bottom:10px;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);padding:9px;border-radius:16px;border:1px solid var(--line);z-index:10}.result-actions{margin-bottom:26px}.section-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.counter{font-size:12px;background:#f1f3f5;padding:4px 8px;border-radius:999px;white-space:nowrap}
+.sound-check-panel,.notice-box{border:1px solid var(--line);background:#fafbfc;border-radius:18px;padding:16px;margin:16px 0;text-align:left}.sound-check-panel p,.notice-box p{margin:3px 0 12px;color:#626a74;font-size:13px}.volume-row{display:grid;grid-template-columns:auto 1fr auto auto;gap:8px;align-items:center;font-size:11px;color:#727a84;margin-bottom:10px}.volume-row input{width:100%}.volume-row output{min-width:42px;text-align:right;font-weight:800;color:#343a40}
+.question{padding:18px 0;border-top:1px solid var(--line)}.question:first-child{border-top:0}.q-title{font-weight:760;margin-bottom:10px}.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}.scale button{padding:10px 3px;background:#f5f6f7;color:#646c75;border:1px solid transparent;font-size:12px}.scale button.selected{background:#20242a;color:#fff}.scale-legend{display:flex;justify-content:space-between;font-size:10px;color:#969da6;margin-top:4px}
+.test-card>p{color:#5d6570}.test-tip{background:#f4f6f7;border-radius:13px;padding:10px 12px;font-size:12px;color:#68717a}.test-stage{border:1px solid var(--line);background:#fafbfb;border-radius:18px;padding:20px;margin-top:18px;text-align:center}.test-status{font-weight:850;margin-bottom:8px}.play-btn{width:100%;margin-top:9px;background:#20242a;color:#fff}.choice-row{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.choice{background:#fff;border:1px solid var(--line)}.feedback{min-height:30px;margin-top:10px;font-size:13px;font-weight:750}.tap-pad{width:min(360px,100%);height:150px;margin:16px auto 5px;border-radius:28px;background:#f0f2f4;color:#20262d;border:1px solid #dce1e5;display:flex;flex-direction:column;align-items:center;justify-content:center;user-select:none}.tap-pad span{font-size:38px;line-height:1;font-weight:950;letter-spacing:.06em}.tap-pad small{margin-top:8px;font-size:11px;color:#737b84}.tap-pad.live{background:#20242a;color:#fff}.tap-pad.live small{color:#cbd0d6}.tap-pad.hit{transform:scale(.965);background:#dfe4e8}.tap-counter{font-size:12px;color:#6f7780}.phase-indicator{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:14px 0}.phase-indicator span{text-align:center;font-size:11px;font-weight:800;border-radius:999px;background:#edf0f2;color:#8a9199;padding:7px}.phase-indicator span.active{background:#20262d;color:#fff}
+.result-hero{text-align:center;padding:30px 22px}.result-label{margin:10px 0 0;color:#777f88;font-size:13px}.result-hero h2{font-size:clamp(27px,7vw,38px);margin:3px 0 8px}.result-description{color:#515861;margin:0}.radar-card canvas{display:block;width:100%;height:auto;margin:0 auto}.score-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.score-item{background:#f5f7f8;border-radius:14px;padding:12px}.score-item span{display:block;font-size:11px;color:#757d86}.score-item b{font-size:26px}.score-source{font-size:10px;color:#8b929b;margin-top:1px}.insight-box{background:#f5f7f8;border-radius:16px;padding:16px}.cause-item,.training-item{padding:15px 0;border-top:1px solid var(--line)}.cause-item:first-child,.training-item:first-child{border-top:0}.cause-item h4,.training-item h4{margin:0 0 5px}.cause-item p,.training-item p{margin:0;color:#626a73;font-size:14px}.cause-rank{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#20262d;color:#fff;font-size:11px;margin-right:7px}.tag{display:inline-block;font-size:10px;font-weight:800;background:#edf0f2;border-radius:999px;padding:3px 7px;margin-bottom:5px}.metrics-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.metric{background:#f5f7f8;border-radius:14px;padding:12px}.metric span{display:block;font-size:10px;color:#7e858e}.metric b{font-size:18px}.research-card summary{font-weight:850;cursor:pointer}.research-list{margin-top:14px}.research-list p{font-size:13px;color:#555d66}.reference-links{display:flex;flex-wrap:wrap;gap:7px}.reference-links a{font-size:11px;color:#343b43;background:#f0f2f4;border-radius:999px;padding:6px 9px;text-decoration:none}.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:#20242a;color:#fff;padding:10px 15px;border-radius:999px;font-size:12px;opacity:0;pointer-events:none;transition:.25s;z-index:50}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:560px){.app-shell{padding:13px 10px 42px}.card{padding:18px;border-radius:19px}.hero{padding-top:8px}.flow-grid{gap:7px}.actions{gap:6px}.actions button{padding:12px 7px;font-size:12px}.scale{gap:4px}.scale button{font-size:11px}.tap-pad{height:140px}.tap-pad span{font-size:34px}.score-grid,.metrics-grid{grid-template-columns:1fr 1fr}}
+
+</style>
+</head>
+<body>
+<main class="app-shell">
+  <header class="hero">
+    <div class="eyebrow">リズム・テンポチェック · v004</div>
+    <h1>リズムずれ原因チェック</h1>
+    <p class="lead">「テンポがズレる」を1つの“リズム感”で片づけず、<strong>どこでズレが生まれているか</strong>を分けて見ます。</p>
+    <div class="ability-chips">
+      <span>リズムの土台をつかむ</span><span>音に合わせる</span><span>音が消えても保つ</span><span>リズムを覚える</span><span>ズレを戻す</span>
+    </div>
+    <p class="note">※ 医療的な診断ではありません。「どこを練習すると良さそうか」を見つけるための簡易チェックです。</p>
+  </header>
+
+  <section class="stepper" aria-label="進行状況">
+    <div class="progress-track"><div id="progressBar" class="progress-bar"></div></div>
+    <div id="progressText" class="progress-text">STEP 1 / 7</div>
+  </section>
+
+  <section id="screenIntro" class="screen active">
+    <div class="card intro-card">
+      <span class="section-kicker">はじめに</span>
+      <h2>約8〜12分</h2>
+      <p class="subtle">質問だけで決めず、実際に「聞く・叩く・無音でも続ける」を組み合わせます。</p>
+      <div class="flow-grid">
+        <div><b>1</b><span>質問18問</span><small>普段のズレ方・頭の中のリズム</small></div>
+        <div><b>2</b><span>土台をつかむ</span><small>「1・2・3・4」の位置を感じる</small></div>
+        <div><b>3</b><span>音に合わせる</span><small>クリックと同じ速さで叩く</small></div>
+        <div><b>4</b><span>音なしで保つ</span><small>音が消えても同じ速さを続ける</small></div>
+        <div><b>5</b><span>速さの変化に合わせる</span><small>途中で速く・遅くなっても合わせ直す</small></div>
+        <div><b>6</b><span>リズムを覚える</span><small>聞いたリズムをそのまま叩く</small></div>
+      </div>
+
+      <div class="sound-check-panel">
+        <div>
+          <strong>先に音量を確認</strong>
+          <p>端末の音量を上げ、クリックがはっきり聞こえる位置にしてください。</p>
+        </div>
+        <div class="volume-row">
+          <span>小</span><input id="volumeSlider" type="range" min="35" max="120" value="95" step="5" aria-label="テスト音量" />
+          <span>大</span><output id="volumeValue">95%</output>
+        </div>
+        <button id="soundCheckBtn" class="secondary wide">♪ 音量確認</button>
+      </div>
+
+      <div class="notice-box">
+        <strong>マイクは使いません。</strong>
+        <p>スマホでは大きな「TAP」ボタン、PCではボタンまたはスペースキーで計測します。タップの絶対遅延よりも、間隔の安定性を中心に見ます。</p>
+      </div>
+      <button id="startBtn" class="primary wide">チェックをはじめる</button>
+    </div>
+  </section>
+
+  <section id="screenQuestions" class="screen">
+    <div class="card">
+      <div class="section-head">
+        <div><span class="section-kicker">質問</span><h2>普段の感覚</h2><p class="subtle compact">「できそう」ではなく、普段実際にどうなるかを基準に答えてください。</p></div>
+        <span id="questionCount" class="counter">0 / 18</span>
+      </div>
+      <div id="questionList" class="question-list"></div>
+      <div class="actions sticky-actions two"><button class="secondary" data-back="intro">戻る</button><button class="primary" id="toPerceptionBtn">実技テストへ</button></div>
+    </div>
+  </section>
+
+  <section id="screenPerception" class="screen">
+    <div class="card test-card">
+      <span class="section-kicker">テスト 1</span>
+      <h2>リズムの土台をつかむ</h2>
+      <p>短いリズムに重なる高い音が、<strong>「1・2・3・4」のタイミングに合っているか／少しズレているか</strong>を判断します。全6問です。</p>
+      <div class="test-tip">「自然に重なって聞こえるか」で答えてください。同じ問題は1回だけ聞き直せます。</div>
+      <div class="test-stage">
+        <div id="perceptionStatus" class="test-status">準備OK</div>
+        <button id="playPerceptionBtn" class="play-btn">▶ リズムを再生</button>
+        <div class="choice-row"><button id="alignedBtn" class="choice" disabled>合っている</button><button id="shiftedBtn" class="choice" disabled>ズレている</button></div>
+        <div id="perceptionFeedback" class="feedback" aria-live="polite"></div>
+      </div>
+      <div class="actions"><button class="secondary" data-back="questions">戻る</button><button class="ghost" id="skipPerceptionBtn">スキップ</button><button class="primary" id="toSyncBtn" disabled>次へ</button></div>
+    </div>
+  </section>
+
+  <section id="screenSync" class="screen">
+    <div class="card test-card">
+      <span class="section-kicker">テスト 2</span>
+      <h2>聞こえる音に合わせる</h2>
+      <p>一定の速さで鳴るクリックに合わせてTAPします。最初に速さをつかみ、そのまま<strong>同じ間隔で</strong>叩いてください。</p>
+      <div class="test-tip">PCはスペースキーでもOKです。「ピッタリ何秒で押せたか」より、同じ速さで安定して叩けているかを見ます。</div>
+      <div class="test-stage">
+        <div id="syncStatus" class="test-status">開始ボタンを押してください</div>
+        <button id="startSyncBtn" class="play-btn">▶ 一定の速さで開始</button>
+        <button id="syncTapPad" class="tap-pad" disabled><span>TAP</span><small>クリックに合わせる</small></button>
+        <div id="syncCounter" class="tap-counter">TAP 0</div>
+        <div id="syncFeedback" class="feedback"></div>
+      </div>
+      <div class="actions"><button class="secondary" data-back="perception">戻る</button><button class="ghost" id="skipSyncBtn">スキップ</button><button class="primary" id="toContinuationBtn" disabled>次へ</button></div>
+    </div>
+  </section>
+
+  <section id="screenContinuation" class="screen">
+    <div class="card test-card">
+      <span class="section-kicker">テスト 3</span>
+      <h2>音が消えても同じ速さを保つ</h2>
+      <p>最初の8回はクリックが鳴ります。その後は音が消えますが、<strong>最初と同じ速さのままTAPを続けてください。</strong></p>
+      <div class="test-tip">ここが今回の中心テストです。音に頼らなくても、自分の中で同じ速さを保てるかを見ます。</div>
+      <div class="phase-indicator"><span id="phaseExternal" class="active">音あり</span><span id="phaseInternal">音なし</span></div>
+      <div class="test-stage">
+        <div id="contStatus" class="test-status">開始ボタンを押してください</div>
+        <button id="startContBtn" class="play-btn">▶ 音あり8回＋音なし8回を開始</button>
+        <button id="contTapPad" class="tap-pad" disabled><span>TAP</span><small>音が消えても続ける</small></button>
+        <div id="contCounter" class="tap-counter">TAP 0</div>
+        <div id="contFeedback" class="feedback"></div>
+      </div>
+      <div class="actions"><button class="secondary" data-back="sync">戻る</button><button class="ghost" id="skipContBtn">スキップ</button><button class="primary" id="toAdaptBtn" disabled>次へ</button></div>
+    </div>
+  </section>
+
+  <section id="screenAdapt" class="screen">
+    <div class="card test-card">
+      <span class="section-kicker">テスト 4</span>
+      <h2>速さが変わっても合わせ直す</h2>
+      <p>途中でクリックの速さが変わります。止まらずにTAPを続け、<strong>新しい速さに合わせ直してください。</strong></p>
+      <div class="test-tip">速さが変わったあと、何回くらいで新しい速さに合わせ直せるかを見ます。</div>
+      <div class="test-stage">
+        <div id="adaptStatus" class="test-status">開始ボタンを押してください</div>
+        <button id="startAdaptBtn" class="play-btn">▶ 速さが変わるテストを開始</button>
+        <button id="adaptTapPad" class="tap-pad" disabled><span>TAP</span><small>変化しても止めない</small></button>
+        <div id="adaptCounter" class="tap-counter">TAP 0</div>
+        <div id="adaptFeedback" class="feedback"></div>
+      </div>
+      <div class="actions"><button class="secondary" data-back="continuation">戻る</button><button class="ghost" id="skipAdaptBtn">スキップ</button><button class="primary" id="toMemoryBtn" disabled>次へ</button></div>
+    </div>
+  </section>
+
+  <section id="screenMemory" class="screen">
+    <div class="card test-card">
+      <span class="section-kicker">テスト 5</span>
+      <h2>聞いたリズムを覚えて真似する</h2>
+      <p>短いリズムを2回聞き、その後<strong>5回TAPして同じリズムを真似</strong>します。全3問です。</p>
+      <div class="test-tip">全体の速さが少し違っても大丈夫です。音と音の間が「短い・長い」のどちらだったかを意識してください。</div>
+      <div class="test-stage">
+        <div id="memoryStatus" class="test-status">第1問 / 3</div>
+        <button id="playPatternBtn" class="play-btn">▶ リズムを2回聞く</button>
+        <button id="memoryTapPad" class="tap-pad" disabled><span>TAP</span><small id="memoryTapHint">聞いた後に5回叩く</small></button>
+        <div id="memoryCounter" class="tap-counter">0 / 5</div>
+        <div id="memoryFeedback" class="feedback"></div>
+      </div>
+      <div class="actions"><button class="secondary" data-back="adapt">戻る</button><button class="ghost" id="skipMemoryBtn">スキップ</button><button class="primary" id="showResultBtn" disabled>結果を見る</button></div>
+    </div>
+  </section>
+
+  <section id="screenResult" class="screen">
+    <div class="result-hero card">
+      <span class="section-kicker">診断結果</span>
+      <p class="result-label">今回いちばん見直したいポイント</p>
+      <h2 id="mainCause">—</h2>
+      <p id="causeDescription" class="result-description"></p>
+    </div>
+
+    <div class="card radar-card">
+      <div class="section-head"><div><h3>リズムがズレる原因を5つに分けてチェック</h3><p class="subtle compact">実際のテスト結果を中心に、普段の自己評価も少し加えた参考スコアです。</p></div></div>
+      <canvas id="radarCanvas" width="700" height="560" aria-label="タイミング能力レーダーチャート"></canvas>
+      <div id="scoreGrid" class="score-grid"></div>
+    </div>
+
+    <div class="card">
+      <h3>「頭の中でリズムを鳴らす力」との関係</h3>
+      <div id="imageryBox" class="insight-box"></div>
+    </div>
+
+    <div class="card">
+      <h3>ズレやすさにつながっていそうなポイント</h3>
+      <div id="causeList" class="cause-list"></div>
+    </div>
+
+    <div class="card">
+      <h3>今日からの練習</h3>
+      <div id="trainingList" class="training-list"></div>
+    </div>
+
+    <div class="card">
+      <h3>テスト結果の詳しい数字</h3>
+      <div id="metricsBox" class="metrics-grid"></div>
+      <p class="subtle">スマホやPCによってボタンを押した時のわずかな遅れが違うため、「何秒早い・遅い」よりも、安定して同じ速さで叩けたかを重視しています。同じ端末で繰り返すと上達を比較しやすくなります。</p>
+    </div>
+
+    <details class="card research-card">
+      <summary>このチェックの考え方のもとになった研究</summary>
+      <div class="research-list">
+        <p><b>「聞き取れる」と「合わせられる」は別：</b> 研究用のリズムテストでも、リズムを感じ取る力、音に合わせて動く力、音がなくても速さを保つ力などを別々に調べます。</p>
+        <p><b>リズムが分かっていても身体が合わないことがある：</b> 音のタイミングは分かっていても、手や声をそのタイミングに合わせる部分が苦手な人がいることが報告されています。</p>
+        <p><b>音が消えた後を見る：</b> 最初はクリックに合わせ、その後クリックを消して同じ速さを続ける方法は、「自分の中で速さを保てるか」を調べる研究でも使われています。</p>
+        <p><b>頭の中で音を鳴らす力も関係する可能性：</b> 2024年の研究では、頭の中の音を動かしたり保ったりしやすい人ほど、実際の音が消れた後もリズムを保ちやすい傾向が報告されています。</p>
+        <p><b>「リズム感」は1つの能力ではない：</b> リズムを見つける、合わせる、覚える、速さを保つ、ズレたら戻す、という複数の力に分けて考える研究が増えています。</p>
+      </div>
+      <div class="reference-links">
+        <a href="https://doi.org/10.3758/s13423-012-0371-2" target="_blank" rel="noreferrer">Repp & Su, 2013</a>
+        <a href="https://doi.org/10.3758/s13428-016-0773-6" target="_blank" rel="noreferrer">Dalla Bella et al., 2017 (BAASTA)</a>
+        <a href="https://doi.org/10.3389/fnhum.2013.00771" target="_blank" rel="noreferrer">Fujii & Schlaug, 2013 (H-BAT)</a>
+        <a href="https://doi.org/10.1016/j.neuropsychologia.2013.06.027" target="_blank" rel="noreferrer">Sowinski & Dalla Bella, 2013</a>
+        <a href="https://doi.org/10.1037/xge0001601" target="_blank" rel="noreferrer">Whitton et al., 2024</a>
+        <a href="https://doi.org/10.3758/s13428-021-01722-2" target="_blank" rel="noreferrer">REPP online timing, 2022</a>
+      </div>
+    </details>
+
+    <div class="actions result-actions two"><button id="copyResultBtn" class="secondary">結果をコピー</button><button id="restartBtn" class="primary">もう一度チェック</button></div>
+  </section>
+</main>
+<div id="toast" class="toast" role="status"></div>
+<script>
 const FACTORS={
   perception:{name:'リズムの土台をつかむ',short:'曲の中の「1・2・3・4」のタイミングをつかむ力'},
   sync:{name:'音に合わせる',short:'聞こえる音と同じタイミングで手や身体を動かす力'},
@@ -133,3 +360,7 @@ $('startAdaptBtn').onclick=runAdapt;$('adaptTapPad').onpointerdown=e=>{e.prevent
 $('playPatternBtn').onclick=playMemoryPattern;$('memoryTapPad').onpointerdown=e=>{e.preventDefault();registerTap('memory')};$('skipMemoryBtn').onclick=()=>{state.memory.skipped=true;state.memory.done=true;renderResults()};$('showResultBtn').onclick=renderResults;
 $('copyResultBtn').onclick=async()=>{try{await navigator.clipboard.writeText(resultText());toast('結果をコピーしました')}catch{toast('コピーできませんでした')}};$('restartBtn').onclick=()=>location.reload();
 renderQuestions();showScreen('intro');
+
+</script>
+</body>
+</html>
