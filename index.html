@@ -2,231 +2,217 @@
 <html lang="ja">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#f7f8fa" />
-  <meta name="description" content="歌うときの脳内再生・音程記憶・音程識別・発声変換の4能力を簡易チェックするWebアプリ" />
-  <title>歌い方タイプ診断 v002</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#f5f6f8" />
+  <meta name="description" content="テンポ・リズムがなぜズレるかを、拍知覚・外部同期・内的テンポ保持・リズム記憶・ズレ補正からチェックするWebアプリ" />
+  <title>リズムずれ原因チェック v003</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <main class="app-shell">
-    <header class="hero">
-      <div class="eyebrow">SINGING COGNITION CHECK · v002</div>
-      <h1>歌い方タイプ診断</h1>
-      <p class="lead">「どうやって音を捉えて、覚えて、声にしているか」を4つの力から見える化します。</p>
-      <div class="ability-chips" aria-label="診断する能力">
-        <span>脳内再生力</span><span>音程記憶力</span><span>音程識別力</span><span>発声変換力</span>
-      </div>
-      <p class="note">※ 医療・心理診断ではありません。歌唱練習の方向性を考えるための簡易チェックです。</p>
-    </header>
+<main class="app-shell">
+  <header class="hero">
+    <div class="eyebrow">RHYTHM & TEMPO CHECK · v003</div>
+    <h1>リズムずれ原因チェック</h1>
+    <p class="lead">「テンポがズレる」を1つの“リズム感”で片づけず、<strong>どこでズレが生まれているか</strong>を分けて見ます。</p>
+    <div class="ability-chips">
+      <span>拍を見つける</span><span>拍に合わせる</span><span>内側で保つ</span><span>型を覚える</span><span>ズレを戻す</span>
+    </div>
+    <p class="note">※ 医療診断・能力証明ではありません。研究知見を参考にした練習方向づけ用の簡易ツールです。</p>
+  </header>
 
-    <section class="stepper" aria-label="進行状況">
-      <div class="progress-track"><div id="progressBar" class="progress-bar"></div></div>
-      <div id="progressText" class="progress-text">STEP 1 / 5</div>
-    </section>
+  <section class="stepper" aria-label="進行状況">
+    <div class="progress-track"><div id="progressBar" class="progress-bar"></div></div>
+    <div id="progressText" class="progress-text">STEP 1 / 7</div>
+  </section>
 
-    <section id="screenIntro" class="screen active">
-      <div class="card intro-card">
-        <span class="section-kicker">START</span>
-        <h2>約6〜10分でチェック</h2>
-        <div class="flow-grid">
-          <div><b>1</b><span>質問20問</span><small>普段の感覚を確認</small></div>
-          <div><b>2</b><span>音程識別</span><small>高低の聞き分け</small></div>
-          <div><b>3</b><span>音程記憶</span><small>短い音列を保持</small></div>
-          <div><b>4</b><span>発声変換</span><small>聞いた音を声で再現</small></div>
-        </div>
-
-        <div class="sound-check-panel">
-          <div>
-            <strong>先に音量を確認</strong>
-            <p>端末音量を上げたうえで、下の音がはっきり聞こえる位置に調整してください。</p>
-          </div>
-          <div class="volume-row">
-            <span>小</span>
-            <input id="volumeSlider" type="range" min="30" max="120" value="90" step="5" aria-label="テスト音量" />
-            <span>大</span>
-            <output id="volumeValue">90%</output>
-          </div>
-          <button id="soundCheckBtn" class="secondary wide">♪ 音量確認の音を鳴らす</button>
-        </div>
-
-        <div class="notice-box">
-          <strong>マイクを使うのは最後の発声テストだけです。</strong>
-          <p>その場で音程を測るためだけに使い、録音データの保存や送信は行いません。発声テストはスキップできます。</p>
-        </div>
-        <button class="primary wide" id="startBtn">診断をはじめる</button>
-      </div>
-    </section>
-
-    <section id="screenQuestions" class="screen">
-      <div class="card">
-        <div class="section-head">
-          <div>
-            <span class="section-kicker">QUESTION</span>
-            <h2>普段の感覚を教えてください</h2>
-            <p class="subtle compact">上手さではなく、「実際にどんな感覚があるか」で答えてください。</p>
-          </div>
-          <span id="questionCount" class="counter"></span>
-        </div>
-        <div id="questionList" class="question-list"></div>
-        <div class="actions sticky-actions two">
-          <button class="secondary" data-back="intro">戻る</button>
-          <button class="primary" id="toDiscriminationBtn">音声テストへ</button>
-        </div>
-      </div>
-    </section>
-
-    <section id="screenDiscrimination" class="screen">
-      <div class="card test-card">
-        <span class="section-kicker">MINI TEST 1</span>
-        <h2>音程識別テスト</h2>
-        <p>2つの音を聞いて、<strong>2つ目が「高い」か「低い」か</strong>を答えます。全5問です。</p>
-        <div class="test-tip">同じ問題は何度でも聞き直せます。イヤホンがあると判定しやすくなります。</div>
-        <div class="test-stage">
-          <div id="discStatus" class="test-status">準備OK</div>
-          <button id="playDiscBtn" class="play-btn">▶ 2つの音を再生</button>
-          <div class="choice-row">
-            <button id="discLowerBtn" class="choice" disabled>2つ目が低い</button>
-            <button id="discHigherBtn" class="choice" disabled>2つ目が高い</button>
-          </div>
-          <div id="discFeedback" class="feedback" aria-live="polite"></div>
-        </div>
-        <div class="actions">
-          <button class="secondary" data-back="questions">戻る</button>
-          <button class="ghost" id="skipDiscBtn">スキップ</button>
-          <button class="primary" id="toMemoryBtn" disabled>次へ</button>
-        </div>
-      </div>
-    </section>
-
-    <section id="screenMemory" class="screen">
-      <div class="card test-card">
-        <span class="section-kicker">MINI TEST 2</span>
-        <h2>音程記憶テスト</h2>
-        <p>最初の3音を覚え、少し無音を挟んだあとに流れる3音が<strong>同じか違うか</strong>を答えます。全4問です。</p>
-        <div class="test-tip">このテストは「覚えておく力」を中心に見ますが、聞き分ける力も少し使います。</div>
-        <div class="test-stage">
-          <div id="memoryStatus" class="test-status">準備OK</div>
-          <div class="memory-flow" aria-hidden="true"><span>1回目</span><i></i><span>無音</span><i></i><span>2回目</span></div>
-          <button id="playMemoryBtn" class="play-btn">▶ 2つの音列を再生</button>
-          <div class="choice-row">
-            <button id="memorySameBtn" class="choice" disabled>同じ</button>
-            <button id="memoryDifferentBtn" class="choice" disabled>違う</button>
-          </div>
-          <div id="memoryFeedback" class="feedback" aria-live="polite"></div>
-        </div>
-        <div class="actions">
-          <button class="secondary" data-back="discrimination">戻る</button>
-          <button class="ghost" id="skipMemoryBtn">スキップ</button>
-          <button class="primary" id="toVocalBtn" disabled>次へ</button>
-        </div>
-      </div>
-    </section>
-
-    <section id="screenVocal" class="screen">
-      <div class="card test-card">
-        <span class="section-kicker">MINI TEST 3</span>
-        <h2>発声変換テスト</h2>
-        <p>基準音を聞いたあと、その高さを<strong>「あー」</strong>で2〜3秒伸ばして再現します。全3回です。</p>
-
-        <div class="vocal-steps">
-          <div><b>1</b><span>マイク確認</span></div>
-          <div><b>2</b><span>基準音を聞く</span></div>
-          <div><b>3</b><span>声を測定</span></div>
-        </div>
-
-        <div class="mic-check-box">
-          <div class="mic-check-head">
-            <div>
-              <strong>① マイク確認</strong>
-              <p>ボタンを押してから、普通の声で「あー」と1〜2秒発声してください。</p>
-            </div>
-            <span id="micBadge" class="status-badge neutral">未確認</span>
-          </div>
-          <div class="level-track"><div id="micLevel" class="level-fill"></div></div>
-          <button id="checkMicBtn" class="secondary wide">🎙 マイクを確認する</button>
-          <div id="micMessage" class="subtle compact" aria-live="polite"></div>
-        </div>
-
-        <label class="range-label">歌いやすい高さ</label>
-        <div class="segmented" id="rangeSelector">
-          <button data-range="low">低め</button>
-          <button data-range="mid" class="selected">中間</button>
-          <button data-range="high">高め</button>
-        </div>
-        <p class="subtle compact">苦しい高さを選ぶ必要はありません。声を出しやすい範囲を選んでください。</p>
-
-        <div class="test-stage vocal-stage">
-          <div id="vocalStatus" class="test-status">まずマイクを確認してください</div>
-          <div id="targetNote" class="target-note">基準音 —</div>
-          <button id="playTargetBtn" class="play-btn" disabled>▶ ② 基準音を聞く</button>
-          <button id="recordPitchBtn" class="record-btn" disabled>● ③ 声を測定する</button>
-          <div class="pitch-meter">
-            <span>低い</span><div class="meter-track"><div id="meterNeedle" class="meter-needle"></div></div><span>高い</span>
-          </div>
-          <div id="detectedPitch" class="detected">検出：—</div>
-          <div id="vocalFeedback" class="feedback" aria-live="polite"></div>
-        </div>
-        <div class="actions">
-          <button class="secondary" data-back="memory">戻る</button>
-          <button class="ghost" id="skipVocalBtn">スキップ</button>
-          <button class="primary" id="showResultBtn" disabled>結果を見る</button>
-        </div>
-      </div>
-    </section>
-
-    <section id="screenResult" class="screen">
-      <div class="result-hero card">
-        <span class="section-kicker">YOUR RESULT</span>
-        <p class="result-label">あなたの歌い方タイプ</p>
-        <h2 id="typeName">—</h2>
-        <p id="typeDescription" class="result-description"></p>
+  <section id="screenIntro" class="screen active">
+    <div class="card intro-card">
+      <span class="section-kicker">START</span>
+      <h2>約8〜12分</h2>
+      <p class="subtle">質問だけで決めず、実際に「聞く・叩く・無音でも続ける」を組み合わせます。</p>
+      <div class="flow-grid">
+        <div><b>1</b><span>質問18問</span><small>普段のズレ方・脳内再生</small></div>
+        <div><b>2</b><span>拍知覚</span><small>拍とクリックの一致判断</small></div>
+        <div><b>3</b><span>外部同期</span><small>メトロノームに合わせる</small></div>
+        <div><b>4</b><span>内的保持</span><small>音が消えても続ける</small></div>
+        <div><b>5</b><span>テンポ追従</span><small>速さの変化についていく</small></div>
+        <div><b>6</b><span>リズム記憶</span><small>短い型を再現する</small></div>
       </div>
 
-      <div class="card radar-card">
-        <div class="section-head">
-          <div>
-            <h3>4能力バランス</h3>
-            <p class="subtle compact">実技テストを受けた能力は「自己評価＋実測」、スキップした能力は「自己評価のみ」です。</p>
-          </div>
+      <div class="sound-check-panel">
+        <div>
+          <strong>先に音量を確認</strong>
+          <p>端末の音量を上げ、クリックがはっきり聞こえる位置にしてください。</p>
         </div>
-        <canvas id="radarCanvas" width="640" height="520" aria-label="4能力レーダーチャート"></canvas>
-        <div id="scoreGrid" class="score-grid"></div>
+        <div class="volume-row">
+          <span>小</span><input id="volumeSlider" type="range" min="35" max="120" value="95" step="5" aria-label="テスト音量" />
+          <span>大</span><output id="volumeValue">95%</output>
+        </div>
+        <button id="soundCheckBtn" class="secondary wide">♪ 音量確認</button>
       </div>
 
-      <div class="card">
-        <h3>結果の見方</h3>
-        <div id="measurementNote" class="insight-box"></div>
+      <div class="notice-box">
+        <strong>マイクは使いません。</strong>
+        <p>スマホでは大きな「TAP」ボタン、PCではボタンまたはスペースキーで計測します。タップの絶対遅延よりも、間隔の安定性を中心に見ます。</p>
       </div>
+      <button id="startBtn" class="primary wide">チェックをはじめる</button>
+    </div>
+  </section>
 
-      <div class="card">
-        <h3>あなたの強み</h3>
-        <div id="strengthBox" class="insight-box"></div>
+  <section id="screenQuestions" class="screen">
+    <div class="card">
+      <div class="section-head">
+        <div><span class="section-kicker">QUESTION</span><h2>普段の感覚</h2><p class="subtle compact">“上手いと思うか”ではなく、実際に起こることを基準に答えてください。</p></div>
+        <span id="questionCount" class="counter">0 / 18</span>
       </div>
+      <div id="questionList" class="question-list"></div>
+      <div class="actions sticky-actions two"><button class="secondary" data-back="intro">戻る</button><button class="primary" id="toPerceptionBtn">実技テストへ</button></div>
+    </div>
+  </section>
 
-      <div class="card">
-        <h3>伸ばすと変わりやすいポイント</h3>
-        <div id="growthBox" class="insight-box"></div>
+  <section id="screenPerception" class="screen">
+    <div class="card test-card">
+      <span class="section-kicker">TEST 1 · BEAT PERCEPTION</span>
+      <h2>拍を見つける</h2>
+      <p>短いリズムに重なる高いクリックが、<strong>拍に合っているか／少しズレているか</strong>を判断します。全6問です。</p>
+      <div class="test-tip">「クリックが気持ちよく重なるか」で答えてください。同じ問題は1回だけ聞き直せます。</div>
+      <div class="test-stage">
+        <div id="perceptionStatus" class="test-status">準備OK</div>
+        <button id="playPerceptionBtn" class="play-btn">▶ リズムを再生</button>
+        <div class="choice-row"><button id="alignedBtn" class="choice" disabled>合っている</button><button id="shiftedBtn" class="choice" disabled>ズレている</button></div>
+        <div id="perceptionFeedback" class="feedback" aria-live="polite"></div>
       </div>
+      <div class="actions"><button class="secondary" data-back="questions">戻る</button><button class="ghost" id="skipPerceptionBtn">スキップ</button><button class="primary" id="toSyncBtn" disabled>次へ</button></div>
+    </div>
+  </section>
 
-      <div class="card">
-        <h3>おすすめ練習</h3>
-        <div id="trainingList" class="training-list"></div>
+  <section id="screenSync" class="screen">
+    <div class="card test-card">
+      <span class="section-kicker">TEST 2 · SYNCHRONIZATION</span>
+      <h2>外の拍に合わせる</h2>
+      <p>90 BPMのクリックに合わせてTAPします。最初の数拍で拍をつかみ、そのまま<strong>できるだけ一定に</strong>叩いてください。</p>
+      <div class="test-tip">PCはスペースキーでもOK。端末差を減らすため、クリックとの絶対的な早い/遅いより「ばらつき」と「テンポ一致」を重視します。</div>
+      <div class="test-stage">
+        <div id="syncStatus" class="test-status">開始ボタンを押してください</div>
+        <button id="startSyncBtn" class="play-btn">▶ 90 BPMで開始</button>
+        <button id="syncTapPad" class="tap-pad" disabled><span>TAP</span><small>クリックに合わせる</small></button>
+        <div id="syncCounter" class="tap-counter">TAP 0</div>
+        <div id="syncFeedback" class="feedback"></div>
       </div>
+      <div class="actions"><button class="secondary" data-back="perception">戻る</button><button class="ghost" id="skipSyncBtn">スキップ</button><button class="primary" id="toContinuationBtn" disabled>次へ</button></div>
+    </div>
+  </section>
 
-      <div class="card">
-        <h3>歌うときの使い方</h3>
-        <div id="usageList" class="usage-list"></div>
+  <section id="screenContinuation" class="screen">
+    <div class="card test-card">
+      <span class="section-kicker">TEST 3 · INTERNAL PULSE</span>
+      <h2>音が消えてもテンポを保つ</h2>
+      <p>最初の8拍はクリックが鳴ります。その後8拍は<strong>無音になりますが、同じテンポのままTAPを続けてください。</strong></p>
+      <div class="test-tip">ここが今回の中心テストです。外部刺激が消えたあとに、内側でテンポをどれくらい維持できるかを見ます。</div>
+      <div class="phase-indicator"><span id="phaseExternal" class="active">クリックあり</span><span id="phaseInternal">無音</span></div>
+      <div class="test-stage">
+        <div id="contStatus" class="test-status">開始ボタンを押してください</div>
+        <button id="startContBtn" class="play-btn">▶ 8拍＋無音8拍を開始</button>
+        <button id="contTapPad" class="tap-pad" disabled><span>TAP</span><small>無音になっても続ける</small></button>
+        <div id="contCounter" class="tap-counter">TAP 0</div>
+        <div id="contFeedback" class="feedback"></div>
       </div>
+      <div class="actions"><button class="secondary" data-back="sync">戻る</button><button class="ghost" id="skipContBtn">スキップ</button><button class="primary" id="toAdaptBtn" disabled>次へ</button></div>
+    </div>
+  </section>
 
-      <div class="actions result-actions two">
-        <button id="copyResultBtn" class="secondary">結果をコピー</button>
-        <button id="restartBtn" class="primary">もう一度診断</button>
+  <section id="screenAdapt" class="screen">
+    <div class="card test-card">
+      <span class="section-kicker">TEST 4 · TEMPO ADAPTATION</span>
+      <h2>テンポ変化に追従する</h2>
+      <p>途中でテンポが変わります。止まらずにTAPを続け、<strong>新しい速さへ追従</strong>してください。</p>
+      <div class="test-tip">ズレを感じたあと、どれくらい素早く新しい周期へ修正できるかを見ます。</div>
+      <div class="test-stage">
+        <div id="adaptStatus" class="test-status">開始ボタンを押してください</div>
+        <button id="startAdaptBtn" class="play-btn">▶ テンポ変化テスト開始</button>
+        <button id="adaptTapPad" class="tap-pad" disabled><span>TAP</span><small>変化しても止めない</small></button>
+        <div id="adaptCounter" class="tap-counter">TAP 0</div>
+        <div id="adaptFeedback" class="feedback"></div>
       </div>
-    </section>
-  </main>
+      <div class="actions"><button class="secondary" data-back="continuation">戻る</button><button class="ghost" id="skipAdaptBtn">スキップ</button><button class="primary" id="toMemoryBtn" disabled>次へ</button></div>
+    </div>
+  </section>
 
-  <div id="toast" class="toast" role="status"></div>
-  <script src="app.js"></script>
+  <section id="screenMemory" class="screen">
+    <div class="card test-card">
+      <span class="section-kicker">TEST 5 · RHYTHM MEMORY</span>
+      <h2>短いリズムの型を覚える</h2>
+      <p>短いリズムを2回聞き、その後<strong>5回TAPして同じリズムを再現</strong>します。全3問です。</p>
+      <div class="test-tip">速さを完全に同じにする必要はありません。「短い・長い」の並び方を再現してください。</div>
+      <div class="test-stage">
+        <div id="memoryStatus" class="test-status">第1問 / 3</div>
+        <button id="playPatternBtn" class="play-btn">▶ リズムを2回聞く</button>
+        <button id="memoryTapPad" class="tap-pad" disabled><span>TAP</span><small id="memoryTapHint">聞いた後に5回叩く</small></button>
+        <div id="memoryCounter" class="tap-counter">0 / 5</div>
+        <div id="memoryFeedback" class="feedback"></div>
+      </div>
+      <div class="actions"><button class="secondary" data-back="adapt">戻る</button><button class="ghost" id="skipMemoryBtn">スキップ</button><button class="primary" id="showResultBtn" disabled>結果を見る</button></div>
+    </div>
+  </section>
+
+  <section id="screenResult" class="screen">
+    <div class="result-hero card">
+      <span class="section-kicker">YOUR RHYTHM PROFILE</span>
+      <p class="result-label">今回もっとも確認したいポイント</p>
+      <h2 id="mainCause">—</h2>
+      <p id="causeDescription" class="result-description"></p>
+    </div>
+
+    <div class="card radar-card">
+      <div class="section-head"><div><h3>5つのタイミング能力</h3><p class="subtle compact">実技を受けた項目は「実技70%＋自己評価30%」の暫定スコアです。</p></div></div>
+      <canvas id="radarCanvas" width="700" height="560" aria-label="タイミング能力レーダーチャート"></canvas>
+      <div id="scoreGrid" class="score-grid"></div>
+    </div>
+
+    <div class="card">
+      <h3>脳内再生との関係</h3>
+      <div id="imageryBox" class="insight-box"></div>
+    </div>
+
+    <div class="card">
+      <h3>ズレの原因候補</h3>
+      <div id="causeList" class="cause-list"></div>
+    </div>
+
+    <div class="card">
+      <h3>今日からの練習</h3>
+      <div id="trainingList" class="training-list"></div>
+    </div>
+
+    <div class="card">
+      <h3>実測メモ</h3>
+      <div id="metricsBox" class="metrics-grid"></div>
+      <p class="subtle">ブラウザ・スマホの入出力遅延があるため、絶対的な「何ms早い/遅い」の診断はしていません。繰り返し同じ端末で比較すると変化を追いやすくなります。</p>
+    </div>
+
+    <details class="card research-card">
+      <summary>このチェックに取り入れた研究知見</summary>
+      <div class="research-list">
+        <p><b>知覚と産出を分ける：</b> BAASTA / H-BATなどでは、拍の知覚・同期・継続・テンポ変化への適応などを別課題として扱います。</p>
+        <p><b>聞こえていても合わせられない場合がある：</b> リズム知覚が保たれていても同期が苦手な例があり、聴覚→運動マッピングの違いが示唆されています。</p>
+        <p><b>外音が消えた後を測る：</b> synchronization–continuation課題は、外部の拍から内的タイミングへ切り替わった後のテンポ保持を調べる代表的手法です。</p>
+        <p><b>脳内再生は“支援要因”：</b> 2024年の研究では、聴覚イメージを操作する自己評価が高いほど、ガイドが消えた継続フェーズの同期が安定する関係が報告されています。</p>
+        <p><b>リズム能力は多次元：</b> 1つの「リズム感」ではなく、知覚・運動・記憶・予測など複数要素として捉える研究が増えています。</p>
+      </div>
+      <div class="reference-links">
+        <a href="https://doi.org/10.3758/s13423-012-0371-2" target="_blank" rel="noreferrer">Repp & Su, 2013</a>
+        <a href="https://doi.org/10.3758/s13428-016-0773-6" target="_blank" rel="noreferrer">Dalla Bella et al., 2017 (BAASTA)</a>
+        <a href="https://doi.org/10.3389/fnhum.2013.00771" target="_blank" rel="noreferrer">Fujii & Schlaug, 2013 (H-BAT)</a>
+        <a href="https://doi.org/10.1016/j.neuropsychologia.2013.06.027" target="_blank" rel="noreferrer">Sowinski & Dalla Bella, 2013</a>
+        <a href="https://doi.org/10.1037/xge0001601" target="_blank" rel="noreferrer">Whitton et al., 2024</a>
+        <a href="https://doi.org/10.3758/s13428-021-01722-2" target="_blank" rel="noreferrer">REPP online timing, 2022</a>
+      </div>
+    </details>
+
+    <div class="actions result-actions two"><button id="copyResultBtn" class="secondary">結果をコピー</button><button id="restartBtn" class="primary">もう一度チェック</button></div>
+  </section>
+</main>
+<div id="toast" class="toast" role="status"></div>
+<script src="app.js"></script>
 </body>
 </html>
