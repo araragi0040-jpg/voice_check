@@ -3,20 +3,21 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#ffffff" />
-  <title>歌い方タイプ診断 v001</title>
+  <meta name="theme-color" content="#f7f8fa" />
+  <meta name="description" content="歌うときの脳内再生・音程記憶・音程識別・発声変換の4能力を簡易チェックするWebアプリ" />
+  <title>歌い方タイプ診断 v002</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <main class="app-shell">
     <header class="hero">
-      <div class="eyebrow">SINGING COGNITION CHECK</div>
+      <div class="eyebrow">SINGING COGNITION CHECK · v002</div>
       <h1>歌い方タイプ診断</h1>
-      <p class="lead">「なぜ歌いやすい／歌いにくいのか」を、4つの能力から見える化します。</p>
+      <p class="lead">「どうやって音を捉えて、覚えて、声にしているか」を4つの力から見える化します。</p>
       <div class="ability-chips" aria-label="診断する能力">
         <span>脳内再生力</span><span>音程記憶力</span><span>音程識別力</span><span>発声変換力</span>
       </div>
-      <p class="note">※ 医療・心理診断ではなく、歌唱練習の方向性を考えるための簡易チェックです。</p>
+      <p class="note">※ 医療・心理診断ではありません。歌唱練習の方向性を考えるための簡易チェックです。</p>
     </header>
 
     <section class="stepper" aria-label="進行状況">
@@ -26,15 +27,34 @@
 
     <section id="screenIntro" class="screen active">
       <div class="card intro-card">
-        <h2>約5〜8分でチェック</h2>
+        <span class="section-kicker">START</span>
+        <h2>約6〜10分でチェック</h2>
         <div class="flow-grid">
-          <div><b>1</b><span>質問20問</span><small>普段の歌い方を確認</small></div>
-          <div><b>2</b><span>音程識別</span><small>2音の高低を聞き分け</small></div>
-          <div><b>3</b><span>音程記憶</span><small>短い音列を覚える</small></div>
+          <div><b>1</b><span>質問20問</span><small>普段の感覚を確認</small></div>
+          <div><b>2</b><span>音程識別</span><small>高低の聞き分け</small></div>
+          <div><b>3</b><span>音程記憶</span><small>短い音列を保持</small></div>
           <div><b>4</b><span>発声変換</span><small>聞いた音を声で再現</small></div>
         </div>
-        <p class="subtle">音声テストは後からスキップ可能です。マイクテストはHTTPS環境（GitHub Pages / Vercel等）での利用を推奨します。</p>
-        <button class="primary" id="startBtn">診断をはじめる</button>
+
+        <div class="sound-check-panel">
+          <div>
+            <strong>先に音量を確認</strong>
+            <p>端末音量を上げたうえで、下の音がはっきり聞こえる位置に調整してください。</p>
+          </div>
+          <div class="volume-row">
+            <span>小</span>
+            <input id="volumeSlider" type="range" min="30" max="120" value="90" step="5" aria-label="テスト音量" />
+            <span>大</span>
+            <output id="volumeValue">90%</output>
+          </div>
+          <button id="soundCheckBtn" class="secondary wide">♪ 音量確認の音を鳴らす</button>
+        </div>
+
+        <div class="notice-box">
+          <strong>マイクを使うのは最後の発声テストだけです。</strong>
+          <p>その場で音程を測るためだけに使い、録音データの保存や送信は行いません。発声テストはスキップできます。</p>
+        </div>
+        <button class="primary wide" id="startBtn">診断をはじめる</button>
       </div>
     </section>
 
@@ -44,13 +64,14 @@
           <div>
             <span class="section-kicker">QUESTION</span>
             <h2>普段の感覚を教えてください</h2>
+            <p class="subtle compact">上手さではなく、「実際にどんな感覚があるか」で答えてください。</p>
           </div>
           <span id="questionCount" class="counter"></span>
         </div>
         <div id="questionList" class="question-list"></div>
-        <div class="actions sticky-actions">
+        <div class="actions sticky-actions two">
           <button class="secondary" data-back="intro">戻る</button>
-          <button class="primary" id="toDiscriminationBtn">次へ</button>
+          <button class="primary" id="toDiscriminationBtn">音声テストへ</button>
         </div>
       </div>
     </section>
@@ -59,15 +80,16 @@
       <div class="card test-card">
         <span class="section-kicker">MINI TEST 1</span>
         <h2>音程識別テスト</h2>
-        <p>2つの音を聞いて、<strong>2つ目の音が高いか低いか</strong>を答えてください。全5問です。</p>
+        <p>2つの音を聞いて、<strong>2つ目が「高い」か「低い」か</strong>を答えます。全5問です。</p>
+        <div class="test-tip">同じ問題は何度でも聞き直せます。イヤホンがあると判定しやすくなります。</div>
         <div class="test-stage">
           <div id="discStatus" class="test-status">準備OK</div>
           <button id="playDiscBtn" class="play-btn">▶ 2つの音を再生</button>
           <div class="choice-row">
-            <button id="discLowerBtn" class="choice" disabled>低い</button>
-            <button id="discHigherBtn" class="choice" disabled>高い</button>
+            <button id="discLowerBtn" class="choice" disabled>2つ目が低い</button>
+            <button id="discHigherBtn" class="choice" disabled>2つ目が高い</button>
           </div>
-          <div id="discFeedback" class="feedback"></div>
+          <div id="discFeedback" class="feedback" aria-live="polite"></div>
         </div>
         <div class="actions">
           <button class="secondary" data-back="questions">戻る</button>
@@ -81,15 +103,17 @@
       <div class="card test-card">
         <span class="section-kicker">MINI TEST 2</span>
         <h2>音程記憶テスト</h2>
-        <p>最初の3音を覚えてください。少し間を空けて流れる2回目が、<strong>同じか違うか</strong>を答えます。全4問です。</p>
+        <p>最初の3音を覚え、少し無音を挟んだあとに流れる3音が<strong>同じか違うか</strong>を答えます。全4問です。</p>
+        <div class="test-tip">このテストは「覚えておく力」を中心に見ますが、聞き分ける力も少し使います。</div>
         <div class="test-stage">
           <div id="memoryStatus" class="test-status">準備OK</div>
-          <button id="playMemoryBtn" class="play-btn">▶ 音列を再生</button>
+          <div class="memory-flow" aria-hidden="true"><span>1回目</span><i></i><span>無音</span><i></i><span>2回目</span></div>
+          <button id="playMemoryBtn" class="play-btn">▶ 2つの音列を再生</button>
           <div class="choice-row">
             <button id="memorySameBtn" class="choice" disabled>同じ</button>
             <button id="memoryDifferentBtn" class="choice" disabled>違う</button>
           </div>
-          <div id="memoryFeedback" class="feedback"></div>
+          <div id="memoryFeedback" class="feedback" aria-live="polite"></div>
         </div>
         <div class="actions">
           <button class="secondary" data-back="discrimination">戻る</button>
@@ -103,25 +127,45 @@
       <div class="card test-card">
         <span class="section-kicker">MINI TEST 3</span>
         <h2>発声変換テスト</h2>
-        <p>基準音を聞いたあと、その高さを<strong>「あー」</strong>で2〜3秒伸ばして再現してください。全3回です。</p>
+        <p>基準音を聞いたあと、その高さを<strong>「あー」</strong>で2〜3秒伸ばして再現します。全3回です。</p>
+
+        <div class="vocal-steps">
+          <div><b>1</b><span>マイク確認</span></div>
+          <div><b>2</b><span>基準音を聞く</span></div>
+          <div><b>3</b><span>声を測定</span></div>
+        </div>
+
+        <div class="mic-check-box">
+          <div class="mic-check-head">
+            <div>
+              <strong>① マイク確認</strong>
+              <p>ボタンを押してから、普通の声で「あー」と1〜2秒発声してください。</p>
+            </div>
+            <span id="micBadge" class="status-badge neutral">未確認</span>
+          </div>
+          <div class="level-track"><div id="micLevel" class="level-fill"></div></div>
+          <button id="checkMicBtn" class="secondary wide">🎙 マイクを確認する</button>
+          <div id="micMessage" class="subtle compact" aria-live="polite"></div>
+        </div>
 
         <label class="range-label">歌いやすい高さ</label>
         <div class="segmented" id="rangeSelector">
           <button data-range="low">低め</button>
-          <button data-range="mid" class="selected">標準</button>
+          <button data-range="mid" class="selected">中間</button>
           <button data-range="high">高め</button>
         </div>
+        <p class="subtle compact">苦しい高さを選ぶ必要はありません。声を出しやすい範囲を選んでください。</p>
 
-        <div class="test-stage">
-          <div id="vocalStatus" class="test-status">まず基準音を聞いてください</div>
-          <div id="targetNote" class="target-note">—</div>
-          <button id="playTargetBtn" class="play-btn">▶ 基準音を聞く</button>
-          <button id="recordPitchBtn" class="record-btn">● 声を測定する</button>
+        <div class="test-stage vocal-stage">
+          <div id="vocalStatus" class="test-status">まずマイクを確認してください</div>
+          <div id="targetNote" class="target-note">基準音 —</div>
+          <button id="playTargetBtn" class="play-btn" disabled>▶ ② 基準音を聞く</button>
+          <button id="recordPitchBtn" class="record-btn" disabled>● ③ 声を測定する</button>
           <div class="pitch-meter">
-            <span>低</span><div class="meter-track"><div id="meterNeedle" class="meter-needle"></div></div><span>高</span>
+            <span>低い</span><div class="meter-track"><div id="meterNeedle" class="meter-needle"></div></div><span>高い</span>
           </div>
-          <div id="detectedPitch" class="detected">検出音程：—</div>
-          <div id="vocalFeedback" class="feedback"></div>
+          <div id="detectedPitch" class="detected">検出：—</div>
+          <div id="vocalFeedback" class="feedback" aria-live="polite"></div>
         </div>
         <div class="actions">
           <button class="secondary" data-back="memory">戻る</button>
@@ -140,9 +184,19 @@
       </div>
 
       <div class="card radar-card">
-        <h3>4能力バランス</h3>
+        <div class="section-head">
+          <div>
+            <h3>4能力バランス</h3>
+            <p class="subtle compact">実技テストを受けた能力は「自己評価＋実測」、スキップした能力は「自己評価のみ」です。</p>
+          </div>
+        </div>
         <canvas id="radarCanvas" width="640" height="520" aria-label="4能力レーダーチャート"></canvas>
         <div id="scoreGrid" class="score-grid"></div>
+      </div>
+
+      <div class="card">
+        <h3>結果の見方</h3>
+        <div id="measurementNote" class="insight-box"></div>
       </div>
 
       <div class="card">
@@ -161,11 +215,11 @@
       </div>
 
       <div class="card">
-        <h3>能力の使い方</h3>
+        <h3>歌うときの使い方</h3>
         <div id="usageList" class="usage-list"></div>
       </div>
 
-      <div class="actions result-actions">
+      <div class="actions result-actions two">
         <button id="copyResultBtn" class="secondary">結果をコピー</button>
         <button id="restartBtn" class="primary">もう一度診断</button>
       </div>
